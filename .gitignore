@@ -28,6 +28,7 @@ ConvertGainCoefs
 DeanTextToBinary
 DetectFailure
 DoubleColumnMC
+DumpErrors
 dumpPixffil
 dumpPixffil_orig
 FindFilledBX
@@ -92,6 +93,7 @@ splitintoev
 TelescopeRotation
 TestAlignment
 TestBinaryFileReader
+TestBufferReader
 TestBXPattern
 TestDACs
 TestGainCal
