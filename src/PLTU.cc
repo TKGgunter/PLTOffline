@@ -261,3 +261,28 @@ namespace PLTU
 
 
 }
+
+//
+//Python Bindings
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTU)
+{
+  using namespace py;
+
+  py::module m("libPLTU", "pybind11 PLTU wrapper");
+
+  m.attr("FIRSTCOL") = PLTU::FIRSTCOL;
+  m.attr("LASTCOL")  = PLTU::LASTCOL;
+  m.attr("FIRSTROW") = PLTU::FIRSTROW;
+  m.attr("LASTROW")  = PLTU::LASTROW;
+  m.attr("NCOL")     = PLTU::NCOL;
+  m.attr("NROW")     = PLTU::NROW;
+
+  m.attr("PIXELWIDTH") = PLTU::PIXELWIDTH;
+  m.attr("PIXELHEIGHT") = PLTU::PIXELHEIGHT;
+
+  return m.ptr();
+}
+

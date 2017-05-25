@@ -1,0 +1,60 @@
+CC = g++
+CFLAGS=-std=c++11 -Wall -O3 -Wall `root-config --cflags`
+
+#Python source code and shared libs
+PYTHON_VERSION = 2.7
+PYTHON_INCLUDE = /home/tgunter/anaconda2/include/python2.7/ 
+PYTHON_LIB = /home/tgunter/anaconda2/lib/python2.7/config/ 
+
+#ROOT lib
+ROOT_LIB = /data/CernRoot/root_v5.34.05/root/lib/
+
+#Where we're going to plave our shared libs
+SHARED_LIB = $(shell pwd)/lib/
+
+#Location of pybind header files
+PYBIND_INC = /home/tgunter/GIT/pybind11/include/
+
+#Adding python and pybind include libs
+CFLAGS += -I$(PYTHON_INCLUDE) -I$(PYBIND_INC) -Iinterface -I/data/CernRoot/root_v5.34.05/root/include/
+
+#pre-compilation and compliation object defs and shared lib flags
+OBJS  = $(patsubst src/%.cc,obj/%.o,$(wildcard src/*.cc))
+LIBS  = $(patsubst src/%.cc,lib/lib%.so,$(wildcard src/*.cc))
+SHARED_FLAGS = $(patsubst src/%.cc,-l%,$(wildcard src/*.cc))
+SHARED_FLAGS += -lpthread -lrt -ldl -lutil `root-config --libs` -Llib -lMinuit -lSpectrum -lEve -lGeom 
+
+
+#Executables
+EXECS   = $(patsubst bin/%.cc,%,$(wildcard bin/*.cc))
+EXECS := $(filter-out TestBufferReader,$(EXECS))
+
+
+# Compile that shit
+all: $(OBJS) $(LIBS) $(EXECS) clean_obj
+
+%: bin/%.cc $(LIBS)
+	$(CC) $(CFLAGS) -L$(SHARED_LIB) -L$(PYTHON_LIB) -L$(ROOT_LIB) $(SHARED_FLAGS) -lpython$(PYTHON_VERSION)  $< -o $@
+
+obj/%.o: src/%.cc
+	$(CC) $(CFLAGS) -fPIC -c $< -o $@
+
+#/
+lib/libXXX.so: YYY
+	$(CC) -shared YYY   -L$(PYTHON_LIB) -L$(ROOT_LIB) `root-config --libs` -Llib -lMinuit -lSpectrum -lEve -lGeom -lpython$(PYTHON_VERSION) -o lib/libXXX.so 
+
+#/
+
+
+
+clean_obj:
+	rm obj/*.o
+
+clean:
+	rm -f $(EXECS)  lib/*.so
+
+cleanexe:
+	rm -f $(EXECS)
+
+cleanimg:
+	rm -f *.eps *.gif *.jpg plots/*.*
