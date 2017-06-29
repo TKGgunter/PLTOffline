@@ -11,6 +11,7 @@
 #include "PLTAlignment.h"
 #include "PLTPlane.h"
 #include "PLTU.h"
+#include <pybind11/pybind11.h>
 
 
 class PLTTrack

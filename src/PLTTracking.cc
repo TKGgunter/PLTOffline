@@ -212,3 +212,27 @@ void PLTTracking::SortOutTracksNoOverlapBestD2 (std::vector<PLTTrack*>& MyTracks
 
   return;
 }
+
+//
+//Python Bindings
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTTracking)
+{
+  py::module m("libPLTTracking", "pybind11 PLTTracking wrapper");
+
+  py::class_<PLTTracking>(m, "PLTTracking")
+    .def(py::init<>()) 
+    .def("SetTrackingAlignment", static_cast<void(PLTTracking::*)(PLTAlignment*)>(&PLTTracking::SetTrackingAlignment))
+    .def("GetTrackingAlgorithm", &PLTTracking::GetTrackingAlgorithm)
+    .def("CompareTrackD2 ", &PLTTracking::CompareTrackD2 )
+    .def("RunTracking", &PLTTracking::RunTracking)
+    .def("TrackFinder_01to2_All", &PLTTracking::TrackFinder_01to2_All)
+    .def("SortOutTracksNoOverlapBestD2", &PLTTracking::SortOutTracksNoOverlapBestD2)
+  ;
+  return m.ptr();
+}
+
+
+

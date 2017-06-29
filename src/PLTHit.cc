@@ -191,8 +191,44 @@ float PLTHit::GZ()
 }
 
 
+//
+//Python Bindings
 
+namespace py = pybind11;
 
+PYBIND11_PLUGIN(libPLTHit)
+{
+  using namespace py;
+
+  py::module m("libPLTHit", "python PLTHit bindings");
+  py::class_<PLTHit>(m, "PLTHit")
+    .def(py::init<>())
+    .def(py::init<std::string &>())
+    .def(py::init<int, int, int, int, int>(), py::arg("channel"), py::arg("roc"), py::arg("col"), py::arg("row"), py::arg("adc"))
+    .def("SetCharge", &PLTHit::SetCharge)
+    .def("SetLXY", &PLTHit::SetLXY)
+    .def("SetTXYZ", &PLTHit::SetTXYZ)
+    .def("SetGXYZ", &PLTHit::SetGXYZ)
+    .def("MatchesColumnRow", &PLTHit::MatchesColumnRow)
+    .def("Channel", &PLTHit::Channel)
+    .def("ROC", &PLTHit::ROC)
+    .def("LastDAC", &PLTHit::LastDAC)
+    .def("Row", &PLTHit::Row)
+    .def("Column", &PLTHit::Column )
+    .def("ADC", &PLTHit::ADC)
+    .def("Charge", &PLTHit::Charge)
+    .def("LX", &PLTHit::LX)
+    .def("LY", &PLTHit::LY)
+    .def("TX",&PLTHit::TX ) 
+    .def("TY",&PLTHit::TY ) 
+    .def("TZ",&PLTHit::TZ ) 
+    .def("GX",&PLTHit::GX ) 
+    .def("GY",&PLTHit::GY ) 
+    .def("GZ",&PLTHit::GZ ) 
+    ;
+  
+  return m.ptr();
+}
 
 
 

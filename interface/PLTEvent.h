@@ -9,6 +9,7 @@
 #include "PLTError.h"
 
 #include <map>
+#include <pybind11/pybind11.h>
 
 class PLTEvent : public PLTTracking
 {

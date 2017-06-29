@@ -252,3 +252,35 @@ std::pair<float, float> PLTCluster::TCenterOfMass ()
 
   return std::make_pair(X / ChargeSum, Y / ChargeSum);
 }
+
+
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTCluster)
+{
+  py::module m("libPLTCluster", "pybind11 wrapping PLTCluster");
+  py::class_<PLTCluster>(m, "PLTCluster")
+    .def(py::init<>())
+    .def("AddHit", &PLTCluster::AddHit)
+    .def("Charge", &PLTCluster::Charge)
+    .def("NHits", &PLTCluster::NHits)
+    .def("Hit",  &PLTCluster::Hit)
+    .def("SeedHit",  &PLTCluster::SeedHit)
+    .def("LX", &PLTCluster::LX)
+    .def("LY", &PLTCluster::LY)
+    .def("TX", &PLTCluster::TX) 
+    .def("TY", &PLTCluster::TY) 
+    .def("TZ", &PLTCluster::TZ) 
+    .def("GX", &PLTCluster::GX) 
+    .def("GY", &PLTCluster::GY) 
+    .def("GZ", &PLTCluster::GZ) 
+    .def("LCenterOfMass", &PLTCluster::LCenterOfMass) 
+    .def("TCenterOfMass", &PLTCluster::TCenterOfMass) 
+    .def("GCenterOfMass", &PLTCluster::GCenterOfMass) 
+    ;
+
+  return m.ptr();
+}
+
+

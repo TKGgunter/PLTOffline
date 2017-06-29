@@ -300,5 +300,38 @@ int PLTEvent::GetNextEvent(uint32_t* buf, uint32_t bufSize)
 
   return ret;
 }
-  
 
+//
+//Python Bindings  
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTEvent)
+{
+
+  py::module m("libPLTEvent", "pybind11 example plugin");
+  py::class_<PLTEvent>(m, "PLTEvent")
+    .def(py::init<>())
+    .def(py::init<std::string &, InputType>())
+    .def(py::init<std::string &, std::string &, std::string &, InputType>())
+    .def("SetDefaults", &PLTEvent::SetDefaults)
+    .def("NPlanes", &PLTEvent::NPlanes)
+    .def("NTelescopes", &PLTEvent::NTelescopes)
+    .def("Clear", &PLTEvent::Clear)
+    .def("AddHit", static_cast<void(PLTEvent::*)(PLTHit&)>(&PLTEvent::AddHit))
+    .def("MakeEvent", &PLTEvent::MakeEvent)
+    .def("SetPlaneFiducialRegion", &PLTEvent::SetPlaneFiducialRegion)
+    .def("SetPlaneClustering", &PLTEvent::SetPlaneClustering)
+    .def("GetAlignment", &PLTEvent::GetAlignment)
+    .def("EventNumber", &PLTEvent::EventNumber)
+    .def("NHits", &PLTEvent::NHits)
+    .def("GetNextEvent", static_cast<int(PLTEvent::*)(void)>(&PLTEvent::GetNextEvent))
+    .def("Time", &PLTEvent::Time)
+    .def("BX", &PLTEvent::BX)
+    .def("ReadPixelMask", &PLTEvent::ReadPixelMask)
+    .def("GetFEDChannel", &PLTEvent::GetFEDChannel)
+    .def("GetErrors", &PLTEvent::GetErrors)
+    .def("getDesyncChannels", &PLTEvent::getDesyncChannels)
+    .def("ReadableTim", &PLTEvent::ReadableTime)
+  ;
+  return m.ptr();
+}

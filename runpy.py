@@ -2,7 +2,8 @@ import sys, os
 
 sys.path.append(os.getcwd() + "/lib")
 
-import libPLTU
+import libPLTU, libPLTHit
 
-print libPLTU.FIRSTROW, libPLTU.LASTROW
-
+print "PLTU", libPLTU.FIRSTROW, libPLTU.LASTROW
+hit = libPLTHit.PLTHit(1, 2,3, 4, 5)
+print "Hit", hit.ROC(), hit.ADC() 

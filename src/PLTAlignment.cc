@@ -595,3 +595,40 @@ void PLTAlignment::AddToGZ (int const ch, float val)
   fConstantMap[ std::make_pair(ch, 2) ].GZ = oldval+val;
 }
 
+
+//
+//Python Bindings
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTAlignment)
+{
+  using namespace py;
+
+  py::module m("libPLTAlignment", "python PLTAlignment bindings");
+  py::class_<PLTAlignment>(m, "PLTAlignment")
+    .def(py::init<>())
+    .def("ReadAlignmentFile", &PLTAlignment::ReadAlignmentFile)
+    .def("WriteAlignmentFile", &PLTAlignment::WriteAlignmentFile)
+    .def("AlignHit", &PLTAlignment::AlignHit)
+    .def("IsGood", &PLTAlignment::IsGood)
+    .def("TtoLX", &PLTAlignment::TtoLX)
+    .def("TtoLY", &PLTAlignment::TtoLY)
+    .def("TtoLXY", &PLTAlignment::TtoLXY)
+    .def("PXtoLX", &PLTAlignment::PXtoLX)
+    .def("PYtoLY", &PLTAlignment::PYtoLY)
+    .def("PXfromLX", &PLTAlignment::PXfromLX)
+    .def("PYfromLY", &PLTAlignment::PYfromLY)
+    .def("LX", &PLTAlignment::LX)
+    .def("LY", &PLTAlignment::LY)
+    .def("LY", &PLTAlignment::LZ)
+    .def("GX", &PLTAlignment::GX) 
+    .def("GY", &PLTAlignment::GY) 
+    .def("GZ", &PLTAlignment::GZ) 
+    .def("GRZ", &PLTAlignment::GRZ)
+    .def("GRY", &PLTAlignment::GRY)
+  ;    
+
+  return m.ptr();
+}
+
+

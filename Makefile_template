@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS=-std=c++11 -Wall -O3 -Wall `root-config --cflags`
+CFLAGS=-std=c++11 -O3 -Wall `root-config --cflags`
 
 #Python source code and shared libs
 PYTHON_VERSION = 2.7

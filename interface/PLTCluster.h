@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 
+#include <pybind11/pybind11.h>
 class PLTCluster
 {
   public:

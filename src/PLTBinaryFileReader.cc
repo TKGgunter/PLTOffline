@@ -563,3 +563,35 @@ void PLTBinaryFileReader::SetPlaneFiducialRegion (PLTPlane::FiducialRegion in)
   fPlaneFiducialRegion = in;
   return;
 }
+
+//
+//Python Binding 
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTBinaryFileReader)
+{
+  using namespace py;
+
+  py::module m("libPLTBinaryFileReader", "python PLTBinaryFileRead bindings");  
+
+  py::enum_<InputTypeEnum>(m, "InputTypeEnum>")
+    .value("kBinaryFile", InputTypeEnum::kBinaryFile)
+    .value("kTextFile", InputTypeEnum::kTextFile)
+    .value("kBuffer", InputTypeEnum::kBuffer)
+    ;
+
+  py::class_<PLTBinaryFileReader>(m, "PLTBinaryFileReader")
+    .def(py::init<>())
+    .def(py::init<std::string &, InputTypeEnum>())
+    .def("Open", &PLTBinaryFileReader::Open)
+    .def("OpenBinary", &PLTBinaryFileReader::OpenBinary)
+    .def("OpenTextFile", &PLTBinaryFileReader::OpenTextFile)
+    .def("SetInputType", &PLTBinaryFileReader::SetInputType)
+    //.def("convPXL", &PLTBinaryFileReader::convPXL)
+    .def("SetPlaneFiducialRegion", &PLTBinaryFileReader::SetPlaneFiducialRegion)
+    ;
+
+  return m.ptr();
+}
+

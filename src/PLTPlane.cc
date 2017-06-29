@@ -439,3 +439,60 @@ void PLTPlane::SetROC (int const in)
   fROC = in;
   return;
 }
+
+//
+//Python Bindings
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTPlane)
+{
+  using namespace py;
+
+  py::module m("libPLTPlane", "python PLTPlane bindings");
+  py::class_<PLTPlane> plane(m, "PLTPlane");
+
+  
+  plane.def(py::init<>());
+/*    .def(py::init<int const, int const>());
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+    .def("", &PLTPlane::)
+*/
+  py::enum_<PLTPlane::ClusterSeed>(plane, "ClusterSeed")
+    .value("kClusterSeed_Charge", PLTPlane::ClusterSeed::kClusterSeed_Charge) 
+    .value("kClusterSeed_NNeighbors", PLTPlane::ClusterSeed::kClusterSeed_NNeighbors) 
+    .export_values()
+    ;
+
+  py::enum_<PLTPlane::FiducialRegion>(plane, "FiducialRegion")
+    .value("kFiducialRegion_All", PLTPlane::FiducialRegion::kFiducialRegion_All)
+    .value("kFiducialRegion_Diamond", PLTPlane::FiducialRegion::kFiducialRegion_Diamond)
+    .value("kFiducialRegion_m1_m1", PLTPlane::FiducialRegion::kFiducialRegion_m1_m1)
+    .value("kFiducialRegion_m2_m2", PLTPlane::FiducialRegion::kFiducialRegion_m2_m2)
+    .value("kFiducialRegion_m3_m3", PLTPlane::FiducialRegion::kFiducialRegion_m3_m3)
+    .value("kFiducialRegion_m4_m4", PLTPlane::FiducialRegion::kFiducialRegion_m4_m4)
+    .value("kFiducialRegion_m5_m5", PLTPlane::FiducialRegion::kFiducialRegion_m5_m5)
+    .value("kFiducialRegion_FullSensor", PLTPlane::FiducialRegion::kFiducialRegion_FullSensor)
+      .export_values()
+    ;
+
+  py::enum_<PLTPlane::Clustering>(plane, "Clustering")
+    .value("kClustering_Seed_3x3", PLTPlane::Clustering::kClustering_Seed_3x3)
+    .value("kClustering_Seed_5x5", PLTPlane::Clustering::kClustering_Seed_5x5)
+    .value("kClustering_Seed_9x9", PLTPlane::Clustering::kClustering_Seed_9x9)
+    .value("kClustering_NNeighbors", PLTPlane::Clustering::kClustering_NNeighbors)
+    .value("kClustering_AllTouching", PLTPlane::Clustering::kClustering_AllTouching)
+    .value("kClustering_OnePixOneCluster", PLTPlane::Clustering::kClustering_OnePixOneCluster)
+    .value("kClustering_NoClustering", PLTPlane::Clustering::kClustering_NoClustering)
+    .export_values()
+    ;
+
+  return m.ptr();
+}
+
+

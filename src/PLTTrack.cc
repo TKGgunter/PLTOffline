@@ -361,3 +361,38 @@ float PLTTrack::D2 ()
 {
   return fD2;
 }
+
+
+//
+//Python Bindings
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTTrack)
+{
+  using namespace py;
+
+  py::module m("libPLTTrack", "python PLTTrack bindings");
+  py::class_<PLTTrack>(m,"PLTTrack")
+    .def(py::init<>())
+    .def("AddCluster", &PLTTrack::AddCluster)
+    .def("MakeTrack", &PLTTrack::MakeTrack)
+    .def("NClusters", &PLTTrack::NClusters)
+    .def("NHits", &PLTTrack::NHits)
+    .def("Cluster", &PLTTrack::Cluster)
+    .def("LResidualX", &PLTTrack::LResidualX)
+    .def("LResiduals", &PLTTrack::LResiduals)
+    .def("IsFiducial", static_cast<bool (PLTTrack::*)(PLTPlane*, PLTAlignment&, PLTPlane::FiducialRegion)>(&PLTTrack::IsFiducial))
+    .def("IsFiducial", static_cast<bool(PLTTrack::*)(int const, int const, PLTAlignment&, PLTPlane::FiducialRegion)>(&PLTTrack::IsFiducial))
+    .def("IsFiducial", static_cast<bool(PLTTrack::*)(int const, int const , PLTAlignment&, std::set<int> const &)>(&PLTTrack::IsFiducial))
+    .def("TX", &PLTTrack::TX)
+    .def("TY", &PLTTrack::TY)
+    .def("GXYatGZ", &PLTTrack::GXYatGZ)
+    .def("D2", &PLTTrack::D2)
+   ; 
+
+  return m.ptr();
+}
+
+
+

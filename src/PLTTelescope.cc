@@ -363,4 +363,32 @@ void PLTTelescope::FillAndOrderTelescope ()
   return;
 }
 
+//
+//Python Binding
+
+namespace py = pybind11;
+
+PYBIND11_PLUGIN(libPLTTelescope)
+{
+  using namespace py;
+
+  py::module m("libPLTTelescope", "python PLTTelescope bindings");
+  py::class_<PLTTelescope>(m, "PLTTelescope")
+    .def(py::init<>())
+    .def("AddPlane",&PLTTelescope::AddPlane)   
+    .def("Channel",&PLTTelescope::Channel)   
+    .def("Plane",&PLTTelescope::Plane)   
+    .def("NPlanes",&PLTTelescope::NPlanes)   
+    .def("NHits",&PLTTelescope::NHits)   
+    .def("NClusters",&PLTTelescope::NClusters)   
+    .def("NTracks",&PLTTelescope::NTracks)   
+    .def("Track",&PLTTelescope::Track)   
+    .def("HitPlaneBits",&PLTTelescope::HitPlaneBits)   
+    .def("NHitPlanes",&PLTTelescope::NHitPlanes)
+    .def("AddTrack",&PLTTelescope::AddTrack)   
+  ;
+
+  return m.ptr();
+}
+
 
