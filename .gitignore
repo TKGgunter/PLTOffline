@@ -8,6 +8,8 @@
 test/*
 lib/*
 data
+obj
+build
 plotScripts/*.d
 plotScripts/*.so
 
